@@ -6,32 +6,8 @@ use panic_halt as _;
 use arduino_hal::port::mode::{Input, Output};
 use arduino_hal::port::{Pin, PinOps};
 
-pub mod serial {
-    use avr_device::interrupt::Mutex;
-    use core::cell::RefCell;
-
-    pub type Usart = arduino_hal::hal::usart::Usart0<arduino_hal::DefaultClock>;
-    pub static GLOBAL_SERIAL: Mutex<RefCell<Option<Usart>>> = Mutex::new(RefCell::new(None));
-
-    pub fn init(serial: Usart) {
-        avr_device::interrupt::free(|cs| {
-            GLOBAL_SERIAL.borrow(cs).replace(Some(serial));
-        })
-    }
-
-    #[macro_export]
-    macro_rules! serial_println {
-        ($($arg:tt)*) => {
-            ::avr_device::interrupt::free(|cs| {
-                if let Some(serial) = &mut *crate::serial::GLOBAL_SERIAL.borrow(cs).borrow_mut() {
-                    ::ufmt::uwriteln!(serial, $($arg)*)
-                } else {
-                    Ok(())
-                }
-            })
-        }
-    }
-}
+#[macro_use]
+pub mod serial;
 
 struct LightEmittingDiode<PIN: PinOps> {
     led: Pin<Output, PIN>,
@@ -99,7 +75,7 @@ fn app() -> ! {
     let dp = arduino_hal::Peripherals::take().unwrap();
     let pins = arduino_hal::pins!(dp);
     let serial_interface = arduino_hal::default_serial!(dp, pins, 38400);
-    serial::init(serial_interface);
+    serial::serial::init(serial_interface);
     
     let mut led_red = LightEmittingDiode { led: pins.d9.into_output(),  state : false };
     let mut led_yel = LightEmittingDiode { led: pins.d10.into_output(), state : false };
