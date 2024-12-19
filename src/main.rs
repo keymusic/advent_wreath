@@ -107,6 +107,7 @@ fn app() -> ! {
     serial_println!("Advent wreath (John 8:12)\r");
 
     loop {
+        let mut update_number = true;
         if push_button_red.pressed_transition() {
             led_red.toggle();
         } else if push_button_yel.pressed_transition() {
@@ -117,12 +118,13 @@ fn app() -> ! {
             led_blu.toggle();
         } else {
             // no event
-            arduino_hal::delay_ms(10);
-            continue;
+            update_number = false;
         }
-
-        let candles_lit =
+        if update_number {
+            let candles_lit =
             led_red.state as u8 + led_yel.state as u8 + led_grn.state as u8 + led_blu.state as u8;
-        serial_println!("Candles lit: {}\r", candles_lit);
+            serial_println!("Candles lit: {}\r", candles_lit);
+        }
+        arduino_hal::delay_ms(10);
     }
 }
