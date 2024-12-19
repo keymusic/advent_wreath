@@ -19,9 +19,7 @@ pub mod serial {
         ($($arg:tt)*) => {
             ::avr_device::interrupt::free(|cs| {
                 if let Some(serial) = &mut *serial::serial::GLOBAL_SERIAL.borrow(cs).borrow_mut() {
-                    ::ufmt::uwriteln!(serial, $($arg)*)
-                } else {
-                    Ok(())
+                    ::ufmt::uwriteln!(serial, $($arg)*).unwrap();
                 }
             })
         }

@@ -87,7 +87,7 @@ fn app() -> ! {
     let mut push_button_grn = PushButton { pbt: pins.a2.into_pull_up_input(), was_pressed : false };
     let mut push_button_blu = PushButton { pbt: pins.a3.into_pull_up_input(), was_pressed : false };
 
-    serial_println!("Rust application is running. Enjoy.\r").unwrap();
+    serial_println!("Rust application is running. Enjoy.\r");
 
     // start-up light show
     for _n in 0..12 {
@@ -104,7 +104,7 @@ fn app() -> ! {
         }
     }
 
-    serial_println!("Advent wreath (John 8:12)\r").unwrap();
+    serial_println!("Advent wreath (John 8:12)\r");
 
     loop {
         if push_button_red.pressed_transition() {
@@ -123,6 +123,6 @@ fn app() -> ! {
 
         let candles_lit =
             led_red.state as u8 + led_yel.state as u8 + led_grn.state as u8 + led_blu.state as u8;
-        serial_println!("Candles lit: {}\r", candles_lit).unwrap();
+        serial_println!("Candles lit: {}\r", candles_lit);
     }
 }
