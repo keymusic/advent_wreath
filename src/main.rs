@@ -12,6 +12,7 @@ pub mod serial;
 struct LightEmittingDiode<PIN: PinOps> {
     led: Pin<Output, PIN>,
     state: bool,
+    color: &'static str,
 }
 
 impl<PIN: PinOps> LightEmittingDiode<PIN> {
@@ -38,6 +39,8 @@ impl<PIN: PinOps> LightEmittingDiode<PIN> {
         } else {
             self.set_high();
         }
+        let state_str = if self.state { "on" } else { "off" };
+        serial_println!("Toggle {} LED {}.", self.color, state_str);
     }
 }
 
@@ -77,17 +80,17 @@ fn app() -> ! {
     let serial_interface = arduino_hal::default_serial!(dp, pins, 38400);
     serial::serial::init(serial_interface);
     
-    let mut led_red = LightEmittingDiode { led: pins.d9.into_output(),  state : false };
-    let mut led_yel = LightEmittingDiode { led: pins.d10.into_output(), state : false };
-    let mut led_grn = LightEmittingDiode { led: pins.d11.into_output(), state : false };
-    let mut led_blu = LightEmittingDiode { led: pins.d3.into_output(),  state : false };
+    let mut led_red = LightEmittingDiode { led: pins.d9.into_output(),  state: false, color: "red" };
+    let mut led_yel = LightEmittingDiode { led: pins.d10.into_output(), state: false, color: "yellow" };
+    let mut led_grn = LightEmittingDiode { led: pins.d11.into_output(), state: false, color: "green" };
+    let mut led_blu = LightEmittingDiode { led: pins.d3.into_output(),  state: false, color: "blue" };
 
-    let mut push_button_red = PushButton { pbt: pins.a0.into_pull_up_input(), was_pressed : false };
-    let mut push_button_yel = PushButton { pbt: pins.a1.into_pull_up_input(), was_pressed : false };
-    let mut push_button_grn = PushButton { pbt: pins.a2.into_pull_up_input(), was_pressed : false };
-    let mut push_button_blu = PushButton { pbt: pins.a3.into_pull_up_input(), was_pressed : false };
+    let mut push_button_red = PushButton { pbt: pins.a0.into_pull_up_input(), was_pressed: false };
+    let mut push_button_yel = PushButton { pbt: pins.a1.into_pull_up_input(), was_pressed: false };
+    let mut push_button_grn = PushButton { pbt: pins.a2.into_pull_up_input(), was_pressed: false };
+    let mut push_button_blu = PushButton { pbt: pins.a3.into_pull_up_input(), was_pressed: false };
 
-    serial_println!("Rust application is running. Enjoy.\r");
+    serial_println!("Rust application is running. Enjoy.");
 
     // start-up light show
     for _n in 0..12 {
@@ -104,7 +107,7 @@ fn app() -> ! {
         }
     }
 
-    serial_println!("Advent wreath (John 8:12)\r");
+    serial_println!("Advent wreath (John 8:12)");
 
     loop {
         let mut update_number = true;
@@ -123,7 +126,7 @@ fn app() -> ! {
         if update_number {
             let candles_lit =
             led_red.state as u8 + led_yel.state as u8 + led_grn.state as u8 + led_blu.state as u8;
-            serial_println!("Candles lit: {}\r", candles_lit);
+            serial_println!("Candles lit: {}", candles_lit);
         }
         arduino_hal::delay_ms(10);
     }
