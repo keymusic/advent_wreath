@@ -90,7 +90,7 @@ fn app() -> ! {
     let mut push_button_grn = PushButton { pbt: pins.a2.into_pull_up_input(), was_pressed: false };
     let mut push_button_blu = PushButton { pbt: pins.a3.into_pull_up_input(), was_pressed: false };
 
-    serial_println!("Rust application is running. Enjoy.");
+    serial_println!("Rust application 'Advent wreath' is running. Enjoy.");
 
     // start-up light show
     for _n in 0..12 {
@@ -107,7 +107,8 @@ fn app() -> ! {
         }
     }
 
-    serial_println!("Advent wreath (John 8:12)");
+    serial_println!("Jesus Christ is the Light of the world.");
+    serial_println!("(John 8:12)");
 
     loop {
         let mut update_number = true;
