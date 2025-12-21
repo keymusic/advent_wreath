@@ -2,7 +2,7 @@
 target = "avr-specs/avr-atmega328p.json"
 
 [target.'cfg(target_arch = "avr")']
-runner = "avrdude -c arduino -p m328p -P com3 -U flash:w:./target/avr-atmega328p/debug/advent_wreath.elf #"
+runner = "avrdude -c arduino -p m328p -P com4 -U flash:w:./target/avr-atmega328p/debug/advent_wreath.elf #"
 
 [unstable]
 build-std = ["core"]

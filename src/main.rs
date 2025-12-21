@@ -3,11 +3,13 @@
 
 use panic_halt as _;
 
-use arduino_hal::port::mode::{Input, Output};
+use arduino_hal::port::mode::{Output};
 use arduino_hal::port::{Pin, PinOps};
+use push_button::PushButton;
 
 #[macro_use]
 pub mod serial;
+pub mod push_button;
 
 struct LightEmittingDiode<PIN: PinOps> {
     led: Pin<Output, PIN>,
@@ -44,37 +46,10 @@ impl<PIN: PinOps> LightEmittingDiode<PIN> {
     }
 }
 
-struct PushButton<PIN: PinOps> {
-    pbt: Pin<Input<arduino_hal::port::mode::PullUp>, PIN>,
-    was_pressed: bool,
-}
 
-impl<PIN: PinOps> PushButton<PIN> {
-    fn is_pressed(&self) -> bool {
-        self.pbt.is_low()
-    }
-
-    // returns true if a transition from 'not pressed' to 'pressed' was detected
-    fn pressed_transition(&mut self) -> bool {
-        let mut transition = false;
-        if self.is_pressed() {
-            if !self.was_pressed {
-                self.was_pressed = true;
-                transition = true;
-            }
-        } else {
-            self.was_pressed = false;
-        }
-        transition
-    }
-}
 
 #[arduino_hal::entry]
 fn main() -> ! {
-    app()
-}
-
-fn app() -> ! {
     let dp = arduino_hal::Peripherals::take().unwrap();
     let pins = arduino_hal::pins!(dp);
     let serial_interface = arduino_hal::default_serial!(dp, pins, 38400);
