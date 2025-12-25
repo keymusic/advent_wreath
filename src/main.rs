@@ -3,50 +3,13 @@
 
 use panic_halt as _;
 
-use arduino_hal::port::mode::{Output};
-use arduino_hal::port::{Pin, PinOps};
 use push_button::PushButton;
 
 #[macro_use]
 pub mod serial;
 pub mod push_button;
-
-struct LightEmittingDiode<PIN: PinOps> {
-    led: Pin<Output, PIN>,
-    state: bool,
-    color: &'static str,
-}
-
-impl<PIN: PinOps> LightEmittingDiode<PIN> {
-    fn set_low(&mut self) {
-        self.led.set_low();
-        self.state = false;
-    }
-
-    fn set_high(&mut self) {
-        self.led.set_high();
-        self.state = true;
-    }
-
-    fn generate_pulse(&mut self) {
-        self.set_high();
-        arduino_hal::delay_ms(25);
-        self.set_low();
-        arduino_hal::delay_ms(25);
-    }
-
-    fn toggle(&mut self) {
-        if self.state {
-            self.set_low();
-        } else {
-            self.set_high();
-        }
-        let state_str = if self.state { "on" } else { "off" };
-        serial_println!("Toggle {} LED {}.", self.color, state_str);
-    }
-}
-
-
+pub mod led;
+use led::LightEmittingDiode;
 
 #[arduino_hal::entry]
 fn main() -> ! {
