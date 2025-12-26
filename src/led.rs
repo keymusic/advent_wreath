@@ -1,16 +1,16 @@
 use arduino_hal::port::mode::Output;
-use arduino_hal::port::{Pin, PinOps};
+use arduino_hal::port::Pin;
 
 use crate::serial;
 use crate::serial_println;
 
-pub struct LightEmittingDiode<PIN: PinOps> {
-    pub led: Pin<Output, PIN>,
+pub struct LightEmittingDiode {
+    pub led: Pin<Output>,
     pub state: bool,
     pub color: &'static str,
 }
 
-impl<PIN: PinOps> LightEmittingDiode<PIN> {
+impl LightEmittingDiode {
     fn set_low(&mut self) {
         self.led.set_low();
         self.state = false;

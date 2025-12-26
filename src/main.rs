@@ -17,10 +17,10 @@ fn main() -> ! {
     let serial_interface = arduino_hal::default_serial!(dp, pins, 38400);
     serial::serial::init(serial_interface);
     
-    let mut led_red = LightEmittingDiode { led: pins.d9.into_output(),  state: false, color: "red" };
-    let mut led_yel = LightEmittingDiode { led: pins.d10.into_output(), state: false, color: "yellow" };
-    let mut led_grn = LightEmittingDiode { led: pins.d11.into_output(), state: false, color: "green" };
-    let mut led_blu = LightEmittingDiode { led: pins.d3.into_output(),  state: false, color: "blue" };
+    let mut led_red = LightEmittingDiode { led: pins.d9.into_output().downgrade(),  state: false, color: "red" };
+    let mut led_yel = LightEmittingDiode { led: pins.d10.into_output().downgrade(), state: false, color: "yellow" };
+    let mut led_grn = LightEmittingDiode { led: pins.d11.into_output().downgrade(), state: false, color: "green" };
+    let mut led_blu = LightEmittingDiode { led: pins.d3.into_output().downgrade(),  state: false, color: "blue" };
 
     let mut push_button_red = PushButton { pbt: pins.a0.into_pull_up_input(), was_pressed: false };
     let mut push_button_yel = PushButton { pbt: pins.a1.into_pull_up_input(), was_pressed: false };
