@@ -1,12 +1,12 @@
 use arduino_hal::port::mode::{Input};
-use arduino_hal::port::{Pin, PinOps};
+use arduino_hal::port::Pin;
     
-pub struct PushButton<PIN: PinOps> {
-    pub pbt: Pin<Input<arduino_hal::port::mode::PullUp>, PIN>,
+pub struct PushButton {
+    pub pbt: Pin<Input<arduino_hal::port::mode::PullUp>>,
     pub was_pressed: bool,
 }
 
-impl<PIN: PinOps> PushButton<PIN> {
+impl PushButton {
     pub fn is_pressed(&self) -> bool {
         self.pbt.is_low()
     }

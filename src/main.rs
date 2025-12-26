@@ -22,10 +22,10 @@ fn main() -> ! {
     let mut led_grn = LightEmittingDiode { led: pins.d11.into_output().downgrade(), state: false, color: "green" };
     let mut led_blu = LightEmittingDiode { led: pins.d3.into_output().downgrade(),  state: false, color: "blue" };
 
-    let mut push_button_red = PushButton { pbt: pins.a0.into_pull_up_input(), was_pressed: false };
-    let mut push_button_yel = PushButton { pbt: pins.a1.into_pull_up_input(), was_pressed: false };
-    let mut push_button_grn = PushButton { pbt: pins.a2.into_pull_up_input(), was_pressed: false };
-    let mut push_button_blu = PushButton { pbt: pins.a3.into_pull_up_input(), was_pressed: false };
+    let mut push_button_red = PushButton { pbt: pins.a0.into_pull_up_input().downgrade(), was_pressed: false };
+    let mut push_button_yel = PushButton { pbt: pins.a1.into_pull_up_input().downgrade(), was_pressed: false };
+    let mut push_button_grn = PushButton { pbt: pins.a2.into_pull_up_input().downgrade(), was_pressed: false };
+    let mut push_button_blu = PushButton { pbt: pins.a3.into_pull_up_input().downgrade(), was_pressed: false };
 
     serial_println!("Rust application 'Advent wreath' is running. Enjoy.");
 
