@@ -1,14 +1,13 @@
 #![no_std]
 #![no_main]
-
-use panic_halt as _;
-
-use push_button::PushButton;
-
 #[macro_use]
+
 pub mod serial;
 pub mod push_button;
 pub mod led;
+
+use panic_halt as _;
+use push_button::PushButton;
 use led::LightEmittingDiode;
 
 #[arduino_hal::entry]
