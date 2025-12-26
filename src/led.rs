@@ -1,6 +1,9 @@
 use arduino_hal::port::mode::Output;
 use arduino_hal::port::{Pin, PinOps};
 
+use crate::serial;
+use crate::serial_println;
+
 pub struct LightEmittingDiode<PIN: PinOps> {
     pub led: Pin<Output, PIN>,
     pub state: bool,
@@ -31,9 +34,8 @@ impl<PIN: PinOps> LightEmittingDiode<PIN> {
         } else {
             self.set_high();
         }
-        /*
+
         let state_str = if self.state { "on" } else { "off" };
         serial_println!("Toggle {} LED {}.", self.color, state_str);
-        */
     }
 }
